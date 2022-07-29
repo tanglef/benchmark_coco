@@ -36,7 +36,7 @@ class Solver(BaseSolver):
 
     def run(self, tol):
         f = self.function
-        x0 = np.ones(self.dimension) / 2.0 
+        x0 = np.ones(self.dimension) / 2.0
         result = minimize(f, x0=x0, method=self.solver, tol=tol)
         self.xopt = result.x
 

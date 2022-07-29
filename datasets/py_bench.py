@@ -18,7 +18,7 @@ class Dataset(BaseDataset):
     parameters = {
         # "function": ["ackley", "rosenbrock", "rastrigin", "schwefel"],
         "function": ["ackley", "rastrigin"],
-        "dimension": [2],
+        "dimension": [10],
         # "dimension": [2, 3],
     }
 
