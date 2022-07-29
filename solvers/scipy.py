@@ -1,5 +1,4 @@
 from benchopt import BaseSolver, safe_import_context
-from benchopt.stopping_criterion import SufficientProgressCriterion
 
 with safe_import_context() as import_ctx:
     import numpy as np
@@ -11,15 +10,10 @@ class Solver(BaseSolver):
 
     name = "scipy"
 
-    install_cmd = 'conda'
-    requirements = [
-        'numpy',
-        'scipy'
-    ]
+    install_cmd = "conda"
+    requirements = ["numpy", "scipy"]
     parameters = {
-        'solver': [
-            'Nelder-Mead', 'Powell', 'BFGS'
-        ],
+        "solver": ["Nelder-Mead", "Powell", "BFGS"],
     }
 
     # stopping_criterion = SufficientProgressCriterion(
@@ -40,8 +34,9 @@ class Solver(BaseSolver):
         if n_iter == 0:
             self.xopt = x0
             return
-        result = minimize(f, x0=x0, method=self.solver,
-                          options={"maxiter": n_iter})
+        result = minimize(
+            f, x0=x0, method=self.solver, options={"maxiter": n_iter}
+        )
         self.xopt = result.x
 
     def get_result(self):
