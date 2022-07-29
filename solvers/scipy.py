@@ -16,13 +16,8 @@ class Solver(BaseSolver):
         "solver": ["Nelder-Mead", "Powell", "BFGS"],
     }
 
-    # stopping_criterion = SufficientProgressCriterion(
-    # patience=5, strategy='tolerance')
-
     def skip(self, function, dimension):
         return False, ""
-        # if dimension > 1:
-        #     return True, "Bisection only runs for 1D problems"
 
     def set_objective(self, function, dimension):
         self.function = function
