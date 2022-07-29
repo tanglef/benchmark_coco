@@ -17,7 +17,7 @@ class Dataset(BaseDataset):
     # the cross product for each key in the dictionary.
     parameters = {
         # "function": ["ackley", "rosenbrock", "rastrigin", "schwefel"],
-        "function": ["ackley", "rastrigin"],
+        "function": ["ackley", "rastrigin", "rosenbrock"],
         "dimension": [10],
         # "dimension": [2, 3],
     }

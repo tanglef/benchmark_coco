@@ -34,7 +34,10 @@ class Solver(BaseSolver):
     def run(self, n_iter):
         f = self.function
         x0 = np.ones(self.dimension) / 2.0
-        result = basinhopping(f, x0=x0, niter=n_iter, T=self.temperature)
+        if n_iter == 0:
+            self.xopt = x0
+            return
+        result = basinhopping(f, x0=x0, niter=n_iter-1, T=self.temperature)
         self.xopt = result.x
 
     def get_result(self):

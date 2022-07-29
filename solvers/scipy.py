@@ -18,12 +18,12 @@ class Solver(BaseSolver):
     ]
     parameters = {
         'solver': [
-            'Nelder-Mead', 'Powell'
+            'Nelder-Mead', 'Powell', 'BFGS'
         ],
     }
 
-    stopping_criterion = SufficientProgressCriterion(
-        patience=5, strategy='tolerance')
+    # stopping_criterion = SufficientProgressCriterion(
+    # patience=5, strategy='tolerance')
 
     def skip(self, function, dimension):
         return False, ""
@@ -34,10 +34,14 @@ class Solver(BaseSolver):
         self.function = function
         self.dimension = dimension
 
-    def run(self, tol):
+    def run(self, n_iter):
         f = self.function
         x0 = np.ones(self.dimension) / 2.0
-        result = minimize(f, x0=x0, method=self.solver, tol=tol)
+        if n_iter == 0:
+            self.xopt = x0
+            return
+        result = minimize(f, x0=x0, method=self.solver,
+                          options={"maxiter": n_iter})
         self.xopt = result.x
 
     def get_result(self):
