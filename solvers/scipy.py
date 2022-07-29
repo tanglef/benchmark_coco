@@ -35,4 +35,4 @@ class Solver(BaseSolver):
         self.xopt = result.x
 
     def get_result(self):
-        return self.xopt
+        return self.xopt.flatten()
