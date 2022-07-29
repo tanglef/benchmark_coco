@@ -7,7 +7,7 @@ with safe_import_context() as import_ctx:
 
 
 class Objective(BaseObjective):
-    name = "COCO test functions"
+    name = "Zero-order test functions"
 
     # All parameters 'p' defined here are available as 'self.p'
 
