@@ -16,4 +16,4 @@ solver: # list of example solvers to do benchmark
 # note: use more repetitions to have quantiles on the plot
 n-repetitions: 1
 timeout: 20
-max-runs: 200
+max-runs: 30
