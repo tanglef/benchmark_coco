@@ -18,7 +18,7 @@ class Dataset(BaseDataset):
     }
 
     def __init__(self, dimension=2):
-        self.function = lambda x: np.linalg.norm(x, 2)
+        self.function = lambda x: np.linalg.norm(x, 2) ** 2
         self.dimension = dimension
 
     def get_data(self):
