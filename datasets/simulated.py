@@ -7,7 +7,7 @@ with safe_import_context() as import_ctx:
 
 class Dataset(BaseDataset):
 
-    name = "square"
+    name = "simulated"
     install_cmd = "conda"
     requirements = ["pip:numpy"]
 
