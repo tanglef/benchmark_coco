@@ -15,13 +15,11 @@ class Dataset(BaseDataset):
     # List of parameters to generate the datasets. The benchmark will consider
     # the cross product for each key in the dictionary.
     parameters = {
-        # "function": ["ackley", "rosenbrock", "rastrigin", "schwefel"],
         "function": ["ackley", "rastrigin", "rosenbrock"],
-        "dimension": [10],
-        # "dimension": [2, 3],
+        "dimension": [2, 10],
     }
 
-    def __init__(self, function="ackley", dimension=2):
+    def __init__(self, function="rosenbrock", dimension=2):
         self.function = function
         self.dimension = dimension
 
