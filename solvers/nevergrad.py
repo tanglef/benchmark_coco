@@ -45,7 +45,7 @@ class Solver(BaseSolver):
         else:
             raise NotImplementedError("Solver not implemented")
         recommendation = optimizer.minimize(f)
-        self.xopt = recommendation.value
+        self.xopt = np.array(recommendation.value)
 
     def get_result(self):
-        return self.xopt
+        return self.xopt.flatten()
