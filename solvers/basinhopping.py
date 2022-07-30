@@ -16,14 +16,8 @@ class Solver(BaseSolver):
         "temperature": [
             1,
             10
-            # 1e-2, 1e-1, 1, 10
         ],
     }
-
-    def skip(self, function, dimension):
-        return False, ""
-        # if dimension > 1:
-        #     return True, "Bisection only runs for 1D problems"
 
     def set_objective(self, function, dimension):
         self.function = function

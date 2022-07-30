@@ -5,11 +5,15 @@ dataset: # dataset to run benchmark on
   - FCN[function="ackley", dimension=20]
   - FCN[function="rastrigin", dimension=20]
   - FCN[function="rosenbrock", dimension=20]
+  - Simulated[dimension=2]
 
 solver: # list of example solvers to do benchmark
   - nevergrad
   - basinhopping
   - scipy
+  - optuna
 
 # note: use more repetitions to have quantiles on the plot
 n-repetitions: 1
+timeout: 20
+max-runs: 200

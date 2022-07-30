@@ -15,37 +15,37 @@ class Solver(BaseSolver):
     install_cmd = "conda"
     requirements = [
         "optuna",
+        "cmaes",
+        "numpy",
     ]
     parameters = {
-        "solver": ["TPE", "RandomSearch"],
+        "solver": ["cmaes", "TPE", "RandomSearch"],
     }
 
     stopping_criterion = SufficientProgressCriterion(
-        patience=7, strategy='iteration')
-
-    def skip(self, function, dimension):
-        return False, ""
+        patience=3, strategy='iteration')
 
     def set_objective(self, function, dimension):
         self.function = function
         self.dimension = dimension
 
     def run(self, n_iter):
-        if n_iter == 0:
-            self.xopt = np.ones(self.dimension) / 2.0
-            return
+        n_iter += 1  # no possible to call optuna with 0 trial
 
         def objective(trial):
             x = np.array([
-                trial.suggest_uniform(f'x_{k}', -1, 2)
+                trial.suggest_float(f'x_{k}', -2, 2)
                 for k in range(self.dimension)
             ])
             return self.function(x)
 
+        seed = 10  # to make results reproducible
         if self.solver == "TPE":
-            sampler = samplers.TPESampler(seed=10, n_startup_trials=10)
+            sampler = samplers.TPESampler(seed=seed, n_startup_trials=10)
         elif self.solver == "RandomSearch":
-            sampler = samplers.RandomSampler(seed=10)
+            sampler = samplers.RandomSampler(seed=seed)
+        elif self.solver == "cmaes":
+            sampler = samplers.CmaEsSampler(seed=seed)
         else:
             raise NotImplementedError(f"Solver {self.solver} not implemented")
         study = optuna.create_study(sampler=sampler, direction='minimize')
@@ -54,7 +54,5 @@ class Solver(BaseSolver):
         self.xopt = study.best_trial.params
 
     def get_result(self):
-        xopt = self.xopt
-        if isinstance(xopt, dict):
-            xopt = np.array([xopt[f'x_{k}'] for k in range(self.dimension)])
+        xopt = np.array([self.xopt[f'x_{k}'] for k in range(self.dimension)])
         return xopt
