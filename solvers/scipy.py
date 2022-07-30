@@ -30,7 +30,10 @@ class Solver(BaseSolver):
             self.xopt = x0
             return
         result = minimize(
-            f, x0=x0, method=self.solver, options={"maxiter": n_iter}
+            f,
+            x0=x0,
+            method=self.solver,
+            options={"maxiter": n_iter, "xatol": 1e-20, "fatol": 1e-20},
         )
         self.xopt = result.x
 
