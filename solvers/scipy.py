@@ -17,9 +17,10 @@ class Solver(BaseSolver):
         "seed": [42],
     }
 
-    def set_objective(self, function, dimension):
+    def set_objective(self, function, dimension, bounds):
         self.function = function
         self.dimension = dimension
+        self.bounds = bounds
 
     def run(self, n_iter):
         f = self.function
