@@ -14,6 +14,7 @@ class Solver(BaseSolver):
     requirements = ["numpy", "scipy"]
     parameters = {
         "solver": ["Nelder-Mead", "Powell", "BFGS"],
+        "seed": [42],
     }
 
     def set_objective(self, function, dimension):
@@ -22,10 +23,15 @@ class Solver(BaseSolver):
 
     def run(self, n_iter):
         f = self.function
-        x0 = np.ones(self.dimension) / 2.0
+        rng = np.random.RandomState(self.seed)  # fix seed
+        x0 = rng.uniform(size=self.dimension,
+                         low=self.bounds[0],
+                         high=self.bounds[1])
+
         if n_iter == 0:
             self.xopt = x0
             return
+
         result = minimize(
             f,
             x0=x0,
