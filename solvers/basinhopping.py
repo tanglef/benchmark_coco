@@ -10,22 +10,14 @@ class Solver(BaseSolver):
 
     name = "basinhopping"
 
-    install_cmd = 'conda'
-    requirements = [
-        'numpy',
-        'scipy'
-    ]
+    install_cmd = "conda"
+    requirements = ["numpy", "scipy"]
     parameters = {
-        'temperature': [
-            1, 10
-            # 1e-2, 1e-1, 1, 10
+        "temperature": [
+            1,
+            10
         ],
     }
-
-    def skip(self, function, dimension):
-        return False, ""
-        # if dimension > 1:
-        #     return True, "Bisection only runs for 1D problems"
 
     def set_objective(self, function, dimension):
         self.function = function
@@ -37,8 +29,8 @@ class Solver(BaseSolver):
         if n_iter == 0:
             self.xopt = x0
             return
-        result = basinhopping(f, x0=x0, niter=n_iter-1, T=self.temperature)
+        result = basinhopping(f, x0=x0, niter=n_iter - 1, T=self.temperature)
         self.xopt = result.x
 
     def get_result(self):
-        return self.xopt
+        return self.xopt.flatten()

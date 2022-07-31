@@ -15,13 +15,9 @@ class Solver(BaseSolver):
         "nevergrad",
     ]
     parameters = {
-        "solver": ["NGOpt", "RandomSearch"],
+        "solver": ["NGOpt", "RandomSearch", "ScrHammersleySearch",
+                   "TwoPointsDE", "CMA", "PSO"],
     }
-
-    def skip(self, function, dimension):
-        return False, ""
-        # if dimension > 1:
-        #     return True, "Bisection only runs for 1D problems"
 
     def set_objective(self, function, dimension):
         self.function = function
@@ -34,18 +30,12 @@ class Solver(BaseSolver):
 
         f = self.function
         parametrization = ng.p.Array(shape=(self.dimension,))
-        if self.solver == "NGOpt":
-            optimizer = ng.optimizers.NGOpt(
-                budget=n_iter, parametrization=parametrization, num_workers=1
-            )
-        elif self.solver == "RandomSearch":
-            optimizer = ng.optimizers.RandomSearch(
-                budget=n_iter, parametrization=parametrization, num_workers=1
-            )
-        else:
-            raise NotImplementedError("Solver not implemented")
+        parametrization.random_state = np.random.RandomState(42)  # fix seed
+        optimizer = ng.optimizers.registry[self.solver](
+            budget=n_iter, parametrization=parametrization, num_workers=1
+        )
         recommendation = optimizer.minimize(f)
-        self.xopt = recommendation.value
+        self.xopt = np.array(recommendation.value)
 
     def get_result(self):
-        return self.xopt
+        return self.xopt.flatten()
