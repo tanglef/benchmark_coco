@@ -22,7 +22,7 @@ figname = "zero_order_dim_20"
 
 # RUN `benchopt run . --bench_config.yml` to produce the csv
 # BENCH_NAME = "outputs/benchopt_run_2022-07-29_17h32m56.parquet"
-BENCH_NAME = "outputs/benchopt_run_2022-07-31_09h23m39.parquet"
+BENCH_NAME = "outputs/benchopt_run_2022-07-31_10h42m19.parquet"
 
 FLOATING_PRECISION = 1e-8
 MIN_XLIM = 1e-3
@@ -32,22 +32,22 @@ SOLVERS = {
     "basinhopping[temperature=1]": "Bashin hopping",
     # "basinhopping[temperature=1]": "Bashin hopping[temperature=1]",
     # "basinhopping[temperature=10]": "Bashin hopping[temperature=10]",
-    "nevergrad[solver=NGOpt]": "Nevergrad[NGOpt]",
-    "nevergrad[solver=RandomSearch]": "Nevergrad[Randomsearch]",
-    'nevergrad[solver=ScrHammersleySearch]': 'nevergrad[ScrHammersleySearch]',
-    'nevergrad[solver=TwoPointsDE]': 'nevergrad[TwoPointsDE]',
-    'nevergrad[solver=CMA]': 'nevergrad[CMA]',
-    "scipy[solver=Nelder-Mead]": "scipy[Nelder-Mead]",
-    "scipy[solver=Powell]": "scipy[Powell]",
-    "scipy[solver=BFGS]": "scipy[BFGS]",
+    "nevergrad[seed=42,solver=NGOpt]": "Nevergrad[NGOpt]",
+    "nevergrad[seed=42,solver=RandomSearch]": "Nevergrad[Randomsearch]",
+    'nevergrad[seed=42,solver=ScrHammersleySearch]': 'nevergrad[ScrHammersleySearch]',
+    'nevergrad[seed=42,solver=TwoPointsDE]': 'nevergrad[TwoPointsDE]',
+    'nevergrad[seed=42,solver=CMA]': 'nevergrad[CMA]',
+    "scipy[seed=42,solver=Nelder-Mead]": "scipy[Nelder-Mead]",
+    "scipy[seed=42,solver=Powell]": "scipy[Powell]",
+    "scipy[seed=42,solver=BFGS]": "scipy[BFGS]",
     # "nevergrad[solver=NGOpt]": "Nevergrad[solver=NGOpt]",
     # "nevergrad[solver=RandomSearch]": "Nevergrad[solver=Randomsearch]",
     # "scipy[solver=Nelder-Mead]": "scipy[solver=Nelder-Mead]",
     # "scipy[solver=Powell]": "scipy[solver=Powell]",
     # "scipy[solver=BFGS]": "scipy[solver=BFGS]",
-    'optuna[solver=cmaes]': 'optuna[CMA]',
-    'optuna[solver=TPE]': 'optuna[TPE]',
-    'optuna[solver=RandomSearch]': 'optuna[RandomSearch]',
+    'optuna[seed=42,solver=cmaes]': 'optuna[CMA]',
+    'optuna[seed=42,solver=TPE]': 'optuna[TPE]',
+    'optuna[seed=42,solver=RandomSearch]': 'optuna[RandomSearch]',
 }
 
 all_solvers = SOLVERS.keys()
@@ -75,14 +75,14 @@ DICT_YTICKS = {
 DICT_XTICKS = {
     "FCN[dimension=20,function=ackley]": np.geomspace(1e-4, 1e2, 4),
     "FCN[dimension=20,function=rastrigin]": np.geomspace(1e-4, 1e0, 4),
-    "FCN[dimension=20,function=rosenbrock]": np.geomspace(1e-5, 1e1, 4),
+    "FCN[dimension=20,function=rosenbrock]": np.geomspace(1e-4, 1e1, 4),
 }
 
 CMAP = plt.get_cmap("tab20")
 style = {solv: (CMAP(i), MARKERS[i]) for i, solv in enumerate(all_solvers)}
 
 
-df = pd.read_parquet(BENCH_NAME)  # , header=0, index_col=0)
+df = pd.read_parquet(BENCH_NAME)
 
 
 df = df[df['solver_name'].isin(all_solvers)]
@@ -140,7 +140,7 @@ for idx_data, dataset in enumerate(datasets):
                 linestyle=linestyle,
             )
 
-        ax.set_xlim([DICT_XLIM.get(dataset, MIN_XLIM), ax.get_xlim()[1]])
+        # ax.set_xlim([DICT_XLIM.get(dataset, MIN_XLIM), ax.get_xlim()[1]])
         axarr[len(datasets) - 1, idx_obj].set_xlabel(
             "Time (s)", fontsize=labelsize
         )
