@@ -21,20 +21,33 @@ SAVEFIG = True
 figname = "zero_order_dim_20"
 
 # RUN `benchopt run . --bench_config.yml` to produce the csv
-BENCH_NAME = "outputs/benchopt_run_2022-07-29_17h32m56.parquet"
+# BENCH_NAME = "outputs/benchopt_run_2022-07-29_17h32m56.parquet"
+BENCH_NAME = "outputs/benchopt_run_2022-07-31_09h23m39.parquet"
 
 FLOATING_PRECISION = 1e-8
 MIN_XLIM = 1e-3
 MARKERS = list(plt.Line2D.markers.keys())[:-4]
 
 SOLVERS = {
-    "basinhopping[temperature=1]": "Bashin hopping{temperature=1]",
-    "basinhopping[temperature=10]": "Bashin hopping{temperature=10]",
-    "nevergrad[solver=NGOpt]": "Nevergrad[solver=NGOpt]",
-    "nevergrad[solver=RandomSearch]": "Nevergrad[solver=Randomsearch]",
-    "scipy[solver=Nelder-Mead]": "scipy[solver=Nelder-Mead]",
-    "scipy[solver=Powell]": "scipy[solver=Powell]",
-    "scipy[solver=BFGS]": "scipy[solver=BFGS]",
+    "basinhopping[temperature=1]": "Bashin hopping",
+    # "basinhopping[temperature=1]": "Bashin hopping[temperature=1]",
+    # "basinhopping[temperature=10]": "Bashin hopping[temperature=10]",
+    "nevergrad[solver=NGOpt]": "Nevergrad[NGOpt]",
+    "nevergrad[solver=RandomSearch]": "Nevergrad[Randomsearch]",
+    'nevergrad[solver=ScrHammersleySearch]': 'nevergrad[ScrHammersleySearch]',
+    'nevergrad[solver=TwoPointsDE]': 'nevergrad[TwoPointsDE]',
+    'nevergrad[solver=CMA]': 'nevergrad[CMA]',
+    "scipy[solver=Nelder-Mead]": "scipy[Nelder-Mead]",
+    "scipy[solver=Powell]": "scipy[Powell]",
+    "scipy[solver=BFGS]": "scipy[BFGS]",
+    # "nevergrad[solver=NGOpt]": "Nevergrad[solver=NGOpt]",
+    # "nevergrad[solver=RandomSearch]": "Nevergrad[solver=Randomsearch]",
+    # "scipy[solver=Nelder-Mead]": "scipy[solver=Nelder-Mead]",
+    # "scipy[solver=Powell]": "scipy[solver=Powell]",
+    # "scipy[solver=BFGS]": "scipy[solver=BFGS]",
+    'optuna[solver=cmaes]': 'optuna[CMA]',
+    'optuna[solver=TPE]': 'optuna[TPE]',
+    'optuna[solver=RandomSearch]': 'optuna[RandomSearch]',
 }
 
 all_solvers = SOLVERS.keys()
@@ -72,6 +85,7 @@ style = {solv: (CMAP(i), MARKERS[i]) for i, solv in enumerate(all_solvers)}
 df = pd.read_parquet(BENCH_NAME)  # , header=0, index_col=0)
 
 
+df = df[df['solver_name'].isin(all_solvers)]
 solvers = df["solver_name"].unique()
 solvers = np.array(sorted(solvers, key=lambda key: SOLVERS[key].lower()))
 datasets = [
@@ -93,7 +107,7 @@ fig1, axarr = plt.subplots(
     len(objectives),
     sharex=False,
     sharey="row",
-    figsize=[11, 1 + 2 * len(datasets)],
+    figsize=[9, 1 + 2 * len(datasets)],
     constrained_layout=True,
     squeeze=False,
 )
@@ -113,7 +127,8 @@ for idx_data, dataset in enumerate(datasets):
             linestyle = "-"
             if solver_name in ("snapml[gpu=True]", "cuml[qn]", "cuml[cd]"):
                 linestyle = "--"
-            ax.loglog(
+            # ax.loglog(
+            ax.semilogx(
                 curve["time"],
                 y,
                 color=style[solver_name][0],
@@ -144,13 +159,13 @@ for idx_data, dataset in enumerate(datasets):
     else:
         dataset_label = dataset
     axarr[idx_data, 0].set_ylabel(DICT_YLABEL[dataset], fontsize=labelsize)
-    axarr[idx_data, 0].set_yticks(DICT_YTICKS[dataset])
+    # axarr[idx_data, 0].set_yticks(DICT_YTICKS[dataset])
 
 plt.show(block=False)
 
 
 fig2, ax2 = plt.subplots(1, 1, figsize=(20, 4))
-n_col = 4
+n_col = 3
 if n_col is None:
     n_col = len(axarr[0, 0].lines)
 
