@@ -17,9 +17,12 @@ class Dataset(BaseDataset):
         "dimension": [2, 10],
     }
 
-    def __init__(self, dimension=2):
+    def __init__(self, dimension=2, bounds=(-3, 3)):
         self.function = lambda x: np.linalg.norm(x, 2) ** 2
         self.dimension = dimension
+        self.bounds = bounds
 
     def get_data(self):
-        return dict(function=self.function, dimension=self.dimension)
+        return dict(function=self.function,
+                    dimension=self.dimension,
+                    bounds=self.bounds)
