@@ -16,9 +16,6 @@ class Solver(BaseSolver):
         "solver": ["Nelder-Mead", "Powell", "BFGS"],
     }
 
-    def skip(self, function, dimension):
-        return False, ""
-
     def set_objective(self, function, dimension):
         self.function = function
         self.dimension = dimension

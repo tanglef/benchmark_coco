@@ -9,7 +9,7 @@ class Dataset(BaseDataset):
 
     name = "simulated"
     install_cmd = "conda"
-    requirements = ["pip:numpy"]
+    requirements = ["numpy"]
 
     # List of parameters to generate the datasets. The benchmark will consider
     # the cross product for each key in the dictionary.
