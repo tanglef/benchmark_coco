@@ -24,16 +24,25 @@ class Dataset(BaseDataset):
         self.dimension = dimension
 
     def get_data(self):
+        # Bounds are taken from:
+        # https://en.wikipedia.org/wiki/Test_functions_for_optimization
+        # Or
+        # https://opytimark.readthedocs.io/en/latest/api/opytimark.markers.n_dimensional.html
         if self.function == "ackley":
             problem = SOP.ackleyfcn(self.dimension)  # Ackley problem
+            bounds = [-32, 32]
         elif self.function == "rosenbrock":
             problem = SOP.rosenbrockfcn(self.dimension)  # Rosenbrock problem
+            bounds = [-30, 30]
         elif self.function == "rastrigin":
             problem = SOP.rastriginfcn(self.dimension)  # Rastrigin problem
+            bounds = [-5.12, 5.12]
         elif self.function == "schwefel":
             problem = SOP.schwefel220fcn(self.dimension)  # Schwefel problem
+            bounds = [-100, 100]
         else:
             raise NotImplementedError(
                 f"Function {self.function} not implemented"
             )
-        return dict(function=problem.f, dimension=problem.n_var)
+        return dict(function=problem.f, dimension=problem.n_var,
+                    bounds=bounds)

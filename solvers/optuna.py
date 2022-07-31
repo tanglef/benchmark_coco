@@ -20,26 +20,28 @@ class Solver(BaseSolver):
     ]
     parameters = {
         "solver": ["cmaes", "TPE", "RandomSearch"],
+        "seed": [42],
     }
 
     stopping_criterion = SufficientProgressCriterion(
         patience=3, strategy='iteration')
 
-    def set_objective(self, function, dimension):
+    def set_objective(self, function, dimension, bounds):
         self.function = function
         self.dimension = dimension
+        self.bounds = bounds
 
     def run(self, n_iter):
         n_iter += 1  # no possible to call optuna with 0 trial
 
         def objective(trial):
             x = np.array([
-                trial.suggest_float(f'x_{k}', -2, 2)
+                trial.suggest_float(f'x_{k}', self.bounds[0], self.bounds[1])
                 for k in range(self.dimension)
             ])
             return self.function(x)
 
-        seed = 10  # to make results reproducible
+        seed = self.seed  # to make results reproducible
         if self.solver == "TPE":
             sampler = samplers.TPESampler(seed=seed, n_startup_trials=10)
         elif self.solver == "RandomSearch":

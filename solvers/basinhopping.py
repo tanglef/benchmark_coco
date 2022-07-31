@@ -13,19 +13,21 @@ class Solver(BaseSolver):
     install_cmd = "conda"
     requirements = ["numpy", "scipy"]
     parameters = {
-        "temperature": [
-            1,
-            10
-        ],
+        "temperature": [1, 10],
+        "seed": [42],
     }
 
-    def set_objective(self, function, dimension):
+    def set_objective(self, function, dimension, bounds):
         self.function = function
         self.dimension = dimension
+        self.bounds = bounds
 
     def run(self, n_iter):
         f = self.function
-        x0 = np.ones(self.dimension) / 2.0
+        rng = np.random.RandomState(self.seed)  # fix seed
+        x0 = rng.uniform(size=self.dimension,
+                         low=self.bounds[0],
+                         high=self.bounds[1])
         if n_iter == 0:
             self.xopt = x0
             return
