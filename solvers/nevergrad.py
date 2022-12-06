@@ -30,8 +30,8 @@ class Solver(BaseSolver):
 
         if n_iter == 0:
             x0 = rng.uniform(size=self.dimension,
-                            low=self.bounds[0],
-                            high=self.bounds[1])
+                             low=self.bounds[0],
+                             high=self.bounds[1])
             self.xopt = x0
             return
 

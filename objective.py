@@ -7,6 +7,7 @@ with safe_import_context() as import_ctx:
 
 
 class Objective(BaseObjective):
+    min_benchopt_version = "1.3"
     name = "Zero-order test functions"
 
     def get_one_solution(self):
@@ -21,7 +22,7 @@ class Objective(BaseObjective):
     def compute(self, x):
         return self.function(x)
 
-    def to_dict(self):
+    def get_objective(self):
         return dict(function=self.function,
                     dimension=self.dimension,
                     bounds=self.bounds)
